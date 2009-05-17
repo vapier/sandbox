@@ -58,8 +58,6 @@ extern char **environ;
 typedef sig_t sighandler_t;
 # elif defined(HAVE___SIGHANDLER_T)
 typedef __sighandler_t sighandler_t;
-# else
-#  error "your system blows chunks: no signal() type"
 # endif
 #endif
 

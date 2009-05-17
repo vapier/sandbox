@@ -99,7 +99,13 @@ AC_TYPE_MODE_T
 AC_TYPE_SIZE_T
 AC_CHECK_DECLS_ONCE([environ])
 AC_CHECK_TYPES([ptrdiff_t])
-AC_CHECK_TYPES([sighandler_t, sig_t, __sighandler_t],,,[#include <signal.h>])
+
+AC_CHECK_TYPES([sighandler_t, sig_t, __sighandler_t],
+               [signal_type_found=yes],,
+               [#include <signal.h>])
+
+AS_IF([test "x$signal_type_found" != "xyes"],
+      [AC_MSG_ERROR([unable to find type for signal()])])
 
 AC_CHECK_HEADERS([linux/ptrace.h asm/ptrace.h sys/ptrace.h], [break;])
 

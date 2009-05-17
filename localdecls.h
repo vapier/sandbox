@@ -67,8 +67,6 @@ typedef __sighandler_t sighandler_t;
 typedef struct pt_regs trace_regs;
 #elif defined(HAVE_STRUCT_USER_REGS_STRUCT)
 typedef struct user_regs_struct trace_regs;
-#else
-# error "unable to find struct for tracing regs"
 #endif
 
 #ifndef ARRAY_SIZE

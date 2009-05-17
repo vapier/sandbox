@@ -82,7 +82,6 @@ AC_CHECK_HEADERS_ONCE([ \
 	sys/file.h \
 	sys/mman.h \
 	sys/param.h \
-	sys/ptrace.h \
 	sys/reg.h \
 	sys/stat.h \
 	sys/syscall.h \
@@ -90,8 +89,6 @@ AC_CHECK_HEADERS_ONCE([ \
 	sys/types.h \
 	sys/user.h \
 	sys/wait.h \
-	asm/ptrace.h \
-	linux/ptrace.h \
 ])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
@@ -104,7 +101,11 @@ AC_CHECK_DECLS_ONCE([environ])
 AC_CHECK_TYPES([ptrdiff_t])
 AC_CHECK_TYPES([sighandler_t, sig_t, __sighandler_t],,,[#include <signal.h>])
 
-AC_CHECK_TYPES([struct user_regs_struct, struct pt_regs],,,[$ac_includes_default
+AC_CHECK_HEADERS([linux/ptrace.h asm/ptrace.h sys/ptrace.h], [break;])
+
+AC_CHECK_TYPES([struct pt_regs, struct user_regs_struct],
+               [tracing_regs_found=yes],,
+               [$ac_includes_default
 #ifdef HAVE_SYS_PTRACE_H
 # include <sys/ptrace.h>
 #endif
@@ -124,6 +125,9 @@ AC_CHECK_TYPES([struct user_regs_struct, struct pt_regs],,,[$ac_includes_default
 #undef FU_ia64_fpreg
 #undef FU_pt_all_user_regs
 ])
+
+AS_IF([test "x$tracing_regs_found" != "xyes"],
+      [AC_MSG_ERROR([unable to find struct for tracing regs])])
 
 dnl Checks for library functions.
 AC_FUNC_CHOWN

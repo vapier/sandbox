@@ -197,8 +197,10 @@ dnl Check for gcc atomic primitives
 AC_MSG_CHECKING([for __sync_lock_test_and_set])
 AC_TRY_LINK([],
 	[int i; __sync_lock_test_and_set(&i, 1); return i;],
-	[AC_DEFINE([HAVE___SYNC_LOCK_TEST_AND_SET], [1], [GCC provides __sync_lock_test_and_set])]
+	[sync_lock_test_and_set=yes;
+         AC_DEFINE([HAVE___SYNC_LOCK_TEST_AND_SET], [1], [GCC provides __sync_lock_test_and_set])]
 )
+AC_MSG_RESULT([$sync_lock_test_and_set])
 
 dnl Check if gcc provides va_copy or __va_copy (for librcutil)
 AC_MSG_CHECKING([for va_copy])
